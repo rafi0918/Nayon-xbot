@@ -1,7 +1,7 @@
 import requests
 import time
 
-bot_token = "7482679113:AAFE4mBqNIydVHTI_Bq553CeY7Zq9Vd4rYE"
+
 chat_id = "5758714029"
 
 def get_signal():
