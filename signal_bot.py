@@ -1,29 +1,32 @@
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 import requests
+import time
 
-# .env ফাইল লোড করা
 load_dotenv()
 
-# .env থেকে token আর chat_id নেওয়া
 bot_token = os.getenv("BOT_TOKEN")
 chat_id = os.getenv("CHAT_ID")
 
-# সিগনাল পাঠানোর ফাংশন
-def send_signal(signal):
+def send_qatex_signal(pair="USD/JPY", action="Sell", timeframe="1 Minute", confidence="99%"):
+    message = (
+        "📈 Qatex Auto Signal\n\n"
+        f"🪙 Pair: {pair}\n"
+        f"🧭 Action: {action} {'🔽' if action.lower() == 'sell' else '🔼'}\n"
+        f"🕐 Timeframe: {timeframe}\n"
+        f"📊 Confidence: {confidence}"
+    )
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     data = {
         "chat_id": chat_id,
-        "text": signal
+        "text": message
     }
     response = requests.post(url, data=data)
     if response.status_code == 200:
         print("✅ Signal sent successfully!")
     else:
-        print("❌ Failed to send signal:", response.text)
+        print(f"❌ Failed to send signal. Status code: {response.status_code}")
 
-# এখানে তোমার সিগনাল লিখো
-signal = "🔔 Auto Signal: BUY EUR/USD for 2 minutes"
-
-# সিগনাল পাঠাও
-send_signal(signal)
+while True:
+    send_qatex_signal()
+    time.sleep(120)  # ২ মিনিট ইন্টারভালে সিগন্যাল পাঠাবে
