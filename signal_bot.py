@@ -23,7 +23,7 @@ def webhook():
         pair = data.get("pair")
         action = data.get("action")
         
-        # Bangladesh time
+        # Bangladesh time (UTC+6)
         bd_time = datetime.now(pytz.timezone("Asia/Dhaka")).strftime("%I:%M %p")
         
         signal = {
@@ -35,7 +35,21 @@ def webhook():
     return "No data", 400
 
 def send_signal(signal, trade_time):
-    message = f"""📈 Qatex Auto Signal
+    market_list = """
+🔥 Recommended Qatex Trading Pairs:
+- EUR/USD
+- GBP/USD
+- USD/JPY
+- EUR/JPY
+- GBP/JPY
+- BTC/USDT
+- ETH/USDT
+- XAU/USD (Gold)
+"""
+
+    message = f"""{market_list}
+
+📈 Qatex Auto Signal
 
 🪙 Pair: {signal['pair']}
 🧭 Action: {signal['action']} {'🔼' if signal['action'].lower() == 'buy' else '🔽'}
